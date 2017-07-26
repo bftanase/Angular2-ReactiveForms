@@ -1,17 +1,54 @@
-import { Component } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 
-import { Customer } from './customer';
+import {Customer} from './customer';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
-    selector: 'my-signup',
-    templateUrl: './app/customers/customer.component.html'
+  selector: 'my-signup',
+  templateUrl: './app/customers/customer.component.html'
 })
-export class CustomerComponent  {
-    customer: Customer= new Customer();
+export class CustomerComponent implements OnInit {
+  customerForm: FormGroup;
 
-    save(customerForm: NgForm) {
-        console.log(customerForm.form);
-        console.log('Saved: ' + JSON.stringify(customerForm.value));
+  customer: Customer = new Customer();
+
+  constructor(private fb: FormBuilder) {
+  }
+
+  ngOnInit(): void {
+    this.customerForm = this.fb.group({
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.maxLength(50)]],
+      email: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+')]],
+      sendCatalog: true,
+      phone: '',
+      notification: 'email'
+    });
+  }
+
+  save() {
+    console.log(this.customerForm);
+    console.log('Saved: ' + JSON.stringify(this.customerForm.value));
+  }
+
+  populateTestData(): void {
+    this.customerForm.patchValue({
+      firstName: 'Jack',
+      lastName: 'Harkness',
+      // email: 'jack@torchwood.com',
+      sendCatalog: false
+    });
+  }
+
+  setNotification(notifyVia: string): void {
+    const phoneControl = this.customerForm.get('phone');
+
+    if (notifyVia === 'text') {
+      phoneControl.setValidators(Validators.required);
+    } else {
+      phoneControl.clearValidators();
     }
- }
+
+    phoneControl.updateValueAndValidity();
+  }
+}

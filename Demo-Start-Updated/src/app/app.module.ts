@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {ReactiveFormsModule} from '@angular/forms';
 
-import { AppComponent } from './app.component';
-import { CustomerComponent } from './customers/customer.component';
+import {AppComponent} from './app.component';
+import {CustomerComponent} from './customers/customer.component';
 
 @NgModule({
   imports: [
     BrowserModule,
-    FormsModule
+    ReactiveFormsModule,
   ],
   declarations: [
     AppComponent,
@@ -16,4 +16,5 @@ import { CustomerComponent } from './customers/customer.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
